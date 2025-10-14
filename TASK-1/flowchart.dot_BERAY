@@ -1,0 +1,62 @@
+Öğrenci Ad-Soyadı: Beray Akar
+Öğrenci No: 250541019
+
+digraph ATM_Withdraw {
+    rankdir=TB;
+    node [shape=rectangle, style=rounded, fontname="Arial"];
+
+    Start [label="Başlangıç", shape=circle, style=filled, fillcolor=lightgreen];
+    InsertCard [label="Kart takıldı"];
+    ValidateCard [label="Kart geçerli mi?"];
+    InvalidCard [label="Kart geçersiz\nKart iade"];
+    EnterPIN [label="PIN gir"];
+    CheckPIN [label="PIN doğru mu?"];
+    WrongPIN [label="Hatalı PIN\nDeneme sayısı artar"];
+    BlockCard [label="3. hatalı deneme\nKart bloke edilir"];
+    SelectOperation [label="İşlem seçimi\n(1-Çekim 2-Bakiye 3-İptal)"];
+    ShowBalance [label="Bakiye göster"];
+    Cancel [label="İşlem iptal\nKart iade"];
+    EnterAmount [label="Tutar gir"];
+    CheckAmount [label="Tutar geçerli mi?"];
+    InvalidAmount [label="Geçersiz tutar\nKart iade"];
+    CheckBalance [label="Yeterli bakiye var mı?"];
+    Insufficient [label="Yetersiz bakiye\nKart iade"];
+    CheckATM [label="ATM'de yeterli nakit var mı?"];
+    NoCash [label="Yeterli nakit yok\nKart iade"];
+    DispenseCash [label="Para veriliyor"];
+    DeductBalance [label="Bakiyeden düş"];
+    PrintReceipt [label="Fiş ister misiniz?"];
+    End [label="Kart iade\nBitiş", shape=doublecircle, style=filled, fillcolor=lightgray];
+
+    // connections
+    Start -> InsertCard -> ValidateCard;
+    ValidateCard -> InvalidCard [label="Hayır"];
+    ValidateCard -> EnterPIN [label="Evet"];
+
+    EnterPIN -> CheckPIN;
+    CheckPIN -> WrongPIN [label="Hayır"];
+    WrongPIN -> BlockCard [label="3. hata"];
+    WrongPIN -> EnterPIN [label="<3 hata"];
+    CheckPIN -> SelectOperation [label="Evet"];
+
+    SelectOperation -> ShowBalance [label="2-Bakiye"];
+    SelectOperation -> Cancel [label="3-İptal"];
+    SelectOperation -> EnterAmount [label="1-Çekim"];
+    ShowBalance -> End;
+    Cancel -> End;
+
+    EnterAmount -> CheckAmount;
+    CheckAmount -> InvalidAmount [label="Hayır"];
+    CheckAmount -> CheckBalance [label="Evet"];
+
+    CheckBalance -> Insufficient [label="Hayır"];
+    CheckBalance -> CheckATM [label="Evet"];
+
+    CheckATM -> NoCash [label="Hayır"];
+    CheckATM -> DispenseCash [label="Evet"];
+
+    DispenseCash -> DeductBalance -> PrintReceipt -> End;
+
+    // styling groups
+    { rank=same; InvalidCard; WrongPIN; BlockCard; InvalidAmount; Insufficient; NoCash; }
+}
