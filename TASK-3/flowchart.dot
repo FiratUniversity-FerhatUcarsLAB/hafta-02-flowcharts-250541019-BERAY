@@ -1,0 +1,64 @@
+Öğrenci Ad-Soyad: Beray Akar
+Öğrenci No. 250541019
+
+digraph HastaSistemi {
+    rankdir=TB;
+    node [shape=rectangle, style=rounded, fontname="Arial"];
+
+    start [label="BAŞLA", shape=circle];
+    kimlik [label="Hasta kimlik doğrulama (TC No)"];
+    tcGecersiz [label="Geçersiz TC No → DUR"];
+    tcGecerli [label="Giriş başarılı"];
+    
+    islemSec [label="İşlem Seçimi:\n1- Randevu Al\n2- Tahlil Sonucu Gör"];
+    
+    // --- Randevu Akışı ---
+    randevuModul [label="Randevu Modülü"];
+    poliklinikSec [label="Poliklinik seçimi"];
+    doktorSec [label="Doktor seçimi"];
+    saatSec [label="Uygun saat seçimi"];
+    randevuOnay [label="Randevu onaylandı\nSMS gönderimi"];
+
+    // --- Tahlil Akışı ---
+    tahlilModul [label="Tahlil Modülü"];
+    tahlilYok [label="Tahlil bulunamadı"];
+    sonucHazirMi [label="Sonuç hazır mı?"];
+    sonucHazir [label="Sonuçlar hazır\nGörüntüle"];
+    pdfIndir [label="PDF indir seçeneği"];
+    sonucBekle [label="Sonuçlar henüz hazır değil"];
+
+    // --- Döngü ve Çıkış ---
+    tekrar [label="Başka işlem yapmak ister misiniz?"];
+    bitis [label="BİTİR", shape=doublecircle];
+
+    // --- Bağlantılar ---
+    start -> kimlik;
+    kimlik -> tcGecersiz [label="Geçersiz"];
+    kimlik -> tcGecerli [label="Geçerli"];
+    tcGecersiz -> bitis;
+    tcGecerli -> islemSec;
+
+    islemSec -> randevuModul [label="1"];
+    islemSec -> tahlilModul [label="2"];
+
+    // Randevu akışı
+    randevuModul -> poliklinikSec;
+    poliklinikSec -> doktorSec;
+    doktorSec -> saatSec;
+    saatSec -> randevuOnay;
+    randevuOnay -> tekrar;
+
+    // Tahlil akışı
+    tahlilModul -> tahlilYok [label="Tahlil yok"];
+    tahlilModul -> sonucHazirMi [label="Tahlil var"];
+    sonucHazirMi -> sonucHazir [label="Hazır"];
+    sonucHazirMi -> sonucBekle [label="Hazır değil"];
+    sonucHazir -> pdfIndir;
+    pdfIndir -> tekrar;
+    sonucBekle -> tekrar;
+    tahlilYok -> tekrar;
+
+    // Döngü ve bitiş
+    tekrar -> islemSec [label="Evet"];
+    tekrar -> bitis [label="Hayır"];
+}
