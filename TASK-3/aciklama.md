@@ -1,11 +1,6 @@
 Öğrenci Adı-Soyadı: Beray Akar
 Öğrenci No: 250541019
 
-Sistemi hasta kimlik doğrulatmasıyla başlattım.
-Hasta randevu alma veya tahlil sonucu gör işlenlerinden birini seçecek.
-Randevu modülünde polikinik, doktor ve saat seçilip onay verilecek ve SMS gönderşlecek.
-Tahlil modülünde sonuçların varlığı ve hazır olup olmadığı kontrol edilecek.
-Sonuçlar görüntülenir veya bekleme mesajı verilir; işlem tekrarlanabilecek.
-
+Bu Graphviz kodu, bir Hasta Bilgi Sistemi'ndeki temel kullanıcı akışını ve işlemlerini özetleyen bir akış diyagramını temsil etmektedir. Süreç BAŞLA ile başlar ve ilk adım olarak Hasta kimlik doğrulama (TC No) kontrolü yapılır. TC kimlik numarası Geçersiz ise süreç hemen BİTİR ile sonlanır; Geçerli ise hasta sisteme başarıyla giriş yapmış olur. Başarılı girişin ardından kullanıcıya İşlem Seçimi ekranı sunulur: Randevu Al veya Tahlil Sonucu Gör . Eğer kullanıcı Randevu Al'ı seçerse, Randevu Modülü akışı başlar. Sırasıyla Poliklinik seçimi, Doktor seçimi ve Uygun saat seçimi adımları tamamlanır. Seçimler sonrası Randevu onaylanır ve kullanıcıya SMS gönderimi yapılır. Eğer kullanıcı Tahlil Sonucu Gör'ü seçerse, Tahlil Modülü akışı başlar. Sistem, hasta adına kayıtlı bir tahlil olup olmadığını kontrol eder. Eğer Tahlil bulunamazsa, kullanıcı doğrudan tekrar işlem seçimi sorusuna yönlendirilir. Tahlil varsa, Sonuç hazır mı? kontrolü yapılır. Sonuçlar Hazır ise Görüntüleme ve PDF indir seçeneği sunulur. Sonuçlar Hazır değil ise kullanıcıya bir bilgilendirme yapılır. Her iki akış da (randevu ve tahlil) tamamlandıktan sonra kullanıcıya Başka işlem yapmak ister misiniz? diye sorulur. Yanıt Evet ise, sistem İşlem Seçimi ekranına geri döner ve akış döngüye girer. Yanıt Hayır ise, süreç BİTİR düğümü ile sonlandırılır.
 
 
