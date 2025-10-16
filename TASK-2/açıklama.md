@@ -3,9 +3,4 @@
 
 
 
-Sistem, kullanıcı girişini kontrol ederek başlar.
-Kullanıcı ürün kategorilerinde gezinir ve stokta varsa ürünü sepete ekler.
-Sepet görüntülenip düzenlenebilir, geçerli indirim kodu uygulanır.
-Sepet tutarı 50 TL’nin altındaysa işlem yapılmaz.
-200 TL ve üzeri alışverişlerde kargo ücretsizdir.
-Toplam tutar hesaplanarak alışveriş tamamlanır.
+Bu Graphviz kodu ile temsil edilen Online Alışveriş Akış Diyagramı, bir e-ticaret sitesindeki tipik bir müşteri yolculuğunu başlangıçtan ödeme öncesi son aşamaya kadar adım adım özetlemektedir. Süreç, kullanıcının giriş kontrolü ile başlar; giriş yapılmamışsa kullanıcı yönlendirilir, yapılmışsa doğrudan ürün seçimine geçilir. Kullanıcı daha sonra bir döngü içerisinde kategorilerde gezinir, bir ürün seçer ve stok kontrolünden geçirir. Ürün stokta varsa sepete eklenir, yoksa bir uyarı verilir. Bu döngü, kullanıcı başka ürün eklemek istemeyene kadar devam eder. Alışveriş kısmı bittikten sonra, kullanıcı sepetini görüntüler ve düzenler, dilediği ürünü silme imkanına sahip olur. Ardından, bir indirim kodu girme aşamasına geçilir; kodun geçerliliğine göre indirim uygulanır veya uyarı verilir. Sonraki aşamada ise iki önemli kural kontrolü yapılır: Sepet tutarının minimum 50 tl olup olmadığı kontrol edilir; bu tutarın altındaysa işlem sonlanır. Tutar yeterliyse, kargo ücreti hesaplamasına geçilir. Toplam tutar 200 TL ve üzerindeyse kargo ücretsiz olur, altındaysa 29tl kargo ücreti eklenir. Tüm indirimler ve kargo ücreti hesaplanıp toplam tutar yazdırıldıktan sonra süreç BİTİR düğümü ile sona erer.
