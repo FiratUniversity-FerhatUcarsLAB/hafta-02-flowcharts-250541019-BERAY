@@ -3,7 +3,7 @@
 
 Sorduğum soru:
 Bana ATM den para çekme sistemi ile ilgili bir pseduocode yazar mısın?
-CHATGPT'nin cevabı:
+Gemini'ın cevabı:
 FUNCTION ATM_Withdraw():
     SHOW "Kartınızı takınız"
     READ card
@@ -71,7 +71,7 @@ FUNCTION ATM_Withdraw():
     EJECT card
     RETURN
 Bunu dot diline çevirir misin?
-CHATGPT'nin cevabı:
+Gemini'ın cevabı:
 digraph ATM_Withdraw {
     rankdir=TB;
     node [shape=rectangle, style=rounded, fontname="Arial"];
