@@ -149,7 +149,10 @@ digraph GüvenlikSistemiAkisi {
     SENSOR_DONGUSU -> SENSOR_DONGUSU [label="Sürekli Tekrar", style=dotted, dir=back];
 
 }
-Daha sonra Gemini'ya şunu dedim:Elbette, oluşturduğumuz Akıllı Ev Güvenlik Sistemi akışının tamamını akıcı bir paragraf şeklinde özetleyebilirim.
+Daha sonra Gemini'ya şunu dedim:
+Bana bu kodları özetler misin?
+Gemini cevabı:
+Elbette, oluşturduğumuz Akıllı Ev Güvenlik Sistemi akışının tamamını akıcı bir paragraf şeklinde özetleyebilirim.
 
 ---
 
