@@ -1,0 +1,58 @@
+digraph GüvenlikSistemiAkisi {
+    // Grafik Ayarları
+    rankdir=TB; // Yukarından aşağıya akış (Top-to-Bottom)
+    node [shape=box, style="rounded, filled", fillcolor="#ECECEC"]; // Varsayılan düğüm stili
+    
+    // Düğümlerin Tanımlanması
+    BASLA [label="SİSTEM BAŞLA", shape=doublecircle, fillcolor="#3498DB", fontcolor=white];
+    AKTIF_KONTROL [label="Sistem Aktif Mi?", shape=diamond, fillcolor="#F1C40F"];
+    SENSOR_DONGUSU [label="SÜREKLİ DÖNGÜ: Sensör Okuma", shape=box, fillcolor="#2ECC71", fontcolor=white];
+    HAREKET_KONTROL [label="Hareket Sensörü Algıladı Mı?", shape=diamond];
+    KAPI_KONTROL [label="Kapı/Pencere Sensörü Açık Mı?", shape=diamond];
+    KAMERA_AKTIF [label="Kamera Aktivasyonu", fillcolor="#E67E22", fontcolor=white];
+    EVDE_KONTROL [label="Ev Sahibi Evde Mi?", shape=diamond, fillcolor="#3498DB", fontcolor=white];
+    ALARM_SEVIYESI [label="Alarm Seviyesi Belirle\n(1:Düşük, 2:Orta, 3:Yüksek)", fillcolor="#C0392B", fontcolor=white];
+    BILDIRIM_GONDER [label="Bildirim Gönder\n(SMS + Uygulama + E-posta)", fillcolor="#1ABC9C", fontcolor=white];
+    BEKLE_KONTROL [label="Bekle (Örn: 30sn) ve Tekrar Kontrol Et", fillcolor="#2C3E50", fontcolor=white];
+    SIFIRLA_KONTROL [label="Alarm Sıfırlama Talebi Var Mı?", shape=diamond];
+    ALARM_SIFIRLA [label="Alarm Sıfırla (Sessiz/Kapat)", fillcolor="#7F8C8D"];
+    SON [label="SİSTEM DUR", shape=doublecircle, fillcolor="#C0392B", fontcolor=white];
+    
+    // Kenarlar (Akış Bağlantıları)
+
+    // Başlangıç ve Aktivasyon
+    BASLA -> AKTIF_KONTROL;
+    AKTIF_KONTROL -> SENSOR_DONGUSU [label="Evet", penwidth=2];
+    AKTIF_KONTROL -> SON [label="Hayır"];
+
+    // Ana Sürekli Döngü
+    SENSOR_DONGUSU -> HAREKET_KONTROL;
+    
+    // Hareket Kontrolü
+    HAREKET_KONTROL -> KAPI_KONTROL [label="Hayır"]; // Hareket yoksa, kapıyı kontrol et
+    HAREKET_KONTROL -> EVDE_KONTROL [label="Evet", color="#C0392B", penwidth=2]; // Hareket varsa, tehdit olabilir
+
+    // Kapı Kontrolü
+    KAPI_KONTROL -> SENSOR_DONGUSU [label="Hayır"]; // Kapı da açıksa, döngü başına dön
+    KAPI_KONTROL -> EVDE_KONTROL [label="Evet", color="#C0392B", penwidth=2]; // Kapı açıksa, tehdit olabilir
+
+    // Yanlış Alarm Kontrolü
+    EVDE_KONTROL -> SENSOR_DONGUSU [label="Evet\n(Yanlış Alarm)", color="#7F8C8D"]; // Evdeyse, sistemi döngüye döndür
+    EVDE_KONTROL -> KAMERA_AKTIF [label="Hayır\n(Tehdit)", color="#C0392B", penwidth=3]; 
+
+    // Tehdit Tepkisi
+    KAMERA_AKTIF -> ALARM_SEVIYESI;
+    ALARM_SEVIYESI -> BILDIRIM_GONDER;
+    BILDIRIM_GONDER -> BEKLE_KONTROL;
+    
+    // Alarm Sıfırlama Döngüsü
+    BEKLE_KONTROL -> SIFIRLA_KONTROL;
+    SIFIRLA_KONTROL -> ALARM_SIFIRLA [label="Evet"];
+    SIFIRLA_KONTROL -> BEKLE_KONTROL [label="Hayır\n(Tekrar Kontrol)", style=dashed]; // Sıfırlanmazsa, tekrar bekleme/kontrol döngüsüne girer
+    
+    ALARM_SIFIRLA -> SENSOR_DONGUSU; // Sıfırlandıktan sonra ana döngüye geri dön
+    
+    // Sürekli Döngüyü Göster
+    SENSOR_DONGUSU -> SENSOR_DONGUSU [label="Sürekli Tekrar", style=dotted, dir=back];
+
+}
