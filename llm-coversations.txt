@@ -1,0 +1,140 @@
+öğrenci Ad-Soyadı: Beray Akar
+Öğrenci No: 250541019
+
+CHATGPT'ye şunu sordum:
+ Hasta kimlik do˘grulama (TC No)
+ ˙
+ Islem secimi: 1-Randevu Al, 2-Tahlil Sonucu G¨or (ko¸sul)
+ Randevu modulu: Poliklinik secimi, doktor listesi, uygun saatler
+ (dongu)
+ Randevu onayı ve SMS g¨onderimi
+ Tahlil modulu: Tahlil var mı kontrolu (kosul)
+ Sonuc hazır mı kontrolu (ko¸sul)
+ Sonuc goruntuleme veya bekleme mesajı
+ Sonucları PDF indir secenegi
+ Baska islem yapmak ister misiniz? (dongu) kosullarına uyarak bir pseudocode yazar mısın?
+CHATGPT'nin cevabı:
+BAŞLA
+
+// Hasta kimlik doğrulama
+TC_NO = kullanıcı_girdisi("TC Kimlik Numaranızı giriniz: ")
+EĞER TC_NO geçerli değilse
+    "Geçersiz TC Kimlik Numarası!" yazdır
+    DUR
+DEĞİLSE
+    "Giriş başarılı." yazdır
+
+TEKRARLA
+    "İşlem Seçiniz:"
+    "1 - Randevu Al"
+    "2 - Tahlil Sonucu Gör"
+    SECIM = kullanıcı_girdisi()
+
+    EĞER SECIM == 1 ise
+        // Randevu Modülü
+        POLIKLINIK_LISTESI = ["Dahiliye", "Kardiyoloji", "Ortopedi", "Cildiye"]
+        HER poliklinik İÇİN POLIKLINIK_LISTESI
+            poliklinik yazdır
+        SECILEN_POLIKLINIK = kullanıcı_girdisi("Poliklinik seçiniz: ")
+
+        DOKTOR_LISTESI = doktor_getir(SECILEN_POLIKLINIK)
+        HER doktor İÇİN DOKTOR_LISTESI
+            doktor yazdır
+        SECILEN_DOKTOR = kullanıcı_girdisi("Doktor seçiniz: ")
+
+        SAATLER = uygun_saatler(SECILEN_DOKTOR)
+        HER saat İÇİN SAATLER
+            saat yazdır
+        SECILEN_SAAT = kullanıcı_girdisi("Randevu saati seçiniz: ")
+
+        "Randevunuz onaylandı." yazdır
+        SMS_GONDER(TC_NO, SECILEN_DOKTOR, SECILEN_SAAT)
+
+    EĞER SECIM == 2 ise
+        // Tahlil Modülü
+        EĞER tahlil_var(TC_NO) değilse
+            "Tahlil kaydınız bulunamadı." yazdır
+        DEĞİLSE
+            EĞER sonuc_hazir(TC_NO) ise
+                "Tahlil sonuçlarınız hazır." yazdır
+                SONUC_GOSTER(TC_NO)
+                "PDF olarak indirmek ister misiniz?" yazdır
+                CEVAP = kullanıcı_girdisi()
+                EĞER CEVAP == "Evet" ise
+                    PDF_INDIR(TC_NO)
+            DEĞİLSE
+                "Sonuçlarınız henüz hazır değil, lütfen bekleyiniz." yazdır
+
+    "Başka bir işlem yapmak ister misiniz?" yazdır
+    DEVAM = kullanıcı_girdisi()
+UNTIL DEVAM == "Hayır"
+
+"İyi günler dileriz." yazdır
+
+BİTİR
+CHATGPT'ye şunu sordum: 
+Bunu dot diline çevirebilir misin?
+CHATGPT'nin cevabı:
+digraph HastaSistemi {
+    rankdir=TB;
+    node [shape=rectangle, style=rounded, fontname="Arial"];
+
+    start [label="BAŞLA", shape=circle];
+    kimlik [label="Hasta kimlik doğrulama (TC No)"];
+    tcGecersiz [label="Geçersiz TC No → DUR"];
+    tcGecerli [label="Giriş başarılı"];
+    
+    islemSec [label="İşlem Seçimi:\n1- Randevu Al\n2- Tahlil Sonucu Gör"];
+    
+    // --- Randevu Akışı ---
+    randevuModul [label="Randevu Modülü"];
+    poliklinikSec [label="Poliklinik seçimi"];
+    doktorSec [label="Doktor seçimi"];
+    saatSec [label="Uygun saat seçimi"];
+    randevuOnay [label="Randevu onaylandı\nSMS gönderimi"];
+
+    // --- Tahlil Akışı ---
+    tahlilModul [label="Tahlil Modülü"];
+    tahlilYok [label="Tahlil bulunamadı"];
+    sonucHazirMi [label="Sonuç hazır mı?"];
+    sonucHazir [label="Sonuçlar hazır\nGörüntüle"];
+    pdfIndir [label="PDF indir seçeneği"];
+    sonucBekle [label="Sonuçlar henüz hazır değil"];
+
+    // --- Döngü ve Çıkış ---
+    tekrar [label="Başka işlem yapmak ister misiniz?"];
+    bitis [label="BİTİR", shape=doublecircle];
+
+    // --- Bağlantılar ---
+    start -> kimlik;
+    kimlik -> tcGecersiz [label="Geçersiz"];
+    kimlik -> tcGecerli [label="Geçerli"];
+    tcGecersiz -> bitis;
+    tcGecerli -> islemSec;
+
+    islemSec -> randevuModul [label="1"];
+    islemSec -> tahlilModul [label="2"];
+
+    // Randevu akışı
+    randevuModul -> poliklinikSec;
+    poliklinikSec -> doktorSec;
+    doktorSec -> saatSec;
+    saatSec -> randevuOnay;
+    randevuOnay -> tekrar;
+
+    // Tahlil akışı
+    tahlilModul -> tahlilYok [label="Tahlil yok"];
+    tahlilModul -> sonucHazirMi [label="Tahlil var"];
+    sonucHazirMi -> sonucHazir [label="Hazır"];
+    sonucHazirMi -> sonucBekle [label="Hazır değil"];
+    sonucHazir -> pdfIndir;
+    pdfIndir -> tekrar;
+    sonucBekle -> tekrar;
+    tahlilYok -> tekrar;
+
+    // Döngü ve bitiş
+    tekrar -> islemSec [label="Evet"];
+    tekrar -> bitis [label="Hayır"];
+}
+BİTİŞ
+
