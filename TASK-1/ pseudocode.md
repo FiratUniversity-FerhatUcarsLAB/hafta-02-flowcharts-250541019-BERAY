@@ -1,13 +1,7 @@
 Öğrenci Ad-Soyad: Beray Akar
 Öğrenci No: 250541019
 
-FUNCTION ATM_Withdraw():
-    SHOW "Kartınızı takınız"
-    READ card
-    IF ValidateCard(card) == FALSE:
-        SHOW "Geçersiz kart"
-        EJECT card
-        RETURN
+
 
     ASK "PIN giriniz"
     READ pin
