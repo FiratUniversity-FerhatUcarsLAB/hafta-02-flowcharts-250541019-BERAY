@@ -1,4 +1,4 @@
-Öğrenci Ad-Soyad: BEray Akar
+Öğrenci Ad-Soyad: Beray Akar
 Öğrenci No: 250541019
 
 ````
