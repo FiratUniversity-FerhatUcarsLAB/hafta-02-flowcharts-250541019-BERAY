@@ -1,0 +1,68 @@
+Öğrenci Ad-Soyad: Beray Akar
+Öğrenci No: 250541019
+
+
+digraph HastaSistemi {
+    rankdir=TB;
+    node [shape=rectangle, style=rounded, fontname="Arial", fontsize=11];
+
+    start [label="BAŞLA", shape=circle];
+    tcGiris [label="TC Kimlik Numarasını Gir"];
+    tcKontrol [label="TC No Geçerli mi?", shape=diamond];
+    tcGecersiz [label="Geçersiz TC No → Program Sonlanır"];
+    tcGecerli [label="Giriş Başarılı"];
+
+    islemSec [label="İşlem Seç: \n1 - Randevu Al \n2 - Tahlil Sonucu Gör", shape=diamond];
+
+    // --- Randevu Modülü ---
+    poliklinik [label="Poliklinik Seç"];
+    doktor [label="Doktor Seç"];
+    saat [label="Uygun Saat Seç"];
+    onay [label="Randevu Onaylandı ve SMS Gönderildi"];
+
+    // --- Tahlil Modülü ---
+    tahlilKontrol [label="Tahlil Kaydı Var mı?", shape=diamond];
+    tahlilYok [label="Tahlil Kaydı Yok"];
+    sonucKontrol [label="Sonuç Hazır mı?", shape=diamond];
+    sonucHazir [label="Sonuçlar Hazır → Göster"];
+    pdfSec [label="PDF İndirmek İster misiniz?", shape=diamond];
+    pdfEvet [label="PDF İndir"];
+    pdfHayir [label="İndirme Yok"];
+    sonucHazirDegil [label="Sonuç Henüz Hazır Değil"];
+
+    // --- Döngü ve Çıkış ---
+    tekrar [label="Başka İşlem Yapmak İster misiniz?", shape=diamond];
+    bitis [label="BİTİR", shape=doublecircle];
+
+    // --- Bağlantılar ---
+    start -> tcGiris -> tcKontrol;
+    tcKontrol -> tcGecersiz [label="Hayır"];
+    tcKontrol -> tcGecerli [label="Evet"];
+
+    tcGecersiz -> bitis;
+    tcGecerli -> islemSec;
+
+    // Randevu Akışı
+    islemSec -> poliklinik [label="1"];
+    poliklinik -> doktor -> saat -> onay -> tekrar;
+
+    // Tahlil Akışı
+    islemSec -> tahlilKontrol [label="2"];
+    tahlilKontrol -> tahlilYok [label="Hayır"];
+    tahlilKontrol -> sonucKontrol [label="Evet"];
+    tahlilYok -> tekrar;
+
+    sonucKontrol -> sonucHazir [label="Evet"];
+    sonucKontrol -> sonucHazirDegil [label="Hayır"];
+    sonucHazir -> pdfSec;
+    sonucHazirDegil -> tekrar;
+
+    pdfSec -> pdfEvet [label="Evet"];
+    pdfSec -> pdfHayir [label="Hayır"];
+    pdfEvet -> tekrar;
+    pdfHayir -> tekrar;
+
+    // Döngü
+    tekrar -> islemSec [label="Evet"];
+    tekrar -> bitis [label="Hayır"];
+}
